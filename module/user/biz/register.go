@@ -1,14 +1,14 @@
 package userbiz
 
 import (
+	"context"
 	"ocean-app-be/common"
-	"ocean-app-be/component/appcontext"
 	usermodel "ocean-app-be/module/user/model"
 )
 
 type RegisterStore interface {
-	Find(ctx appcontext.AppCtx, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error)
-	Create(ctx appcontext.AppCtx, data *usermodel.UserCreate) error
+	Find(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error)
+	Create(ctx context.Context, data *usermodel.UserCreate) error
 }
 type Hasher interface {
 	Hash(data string) string
@@ -24,7 +24,7 @@ func NewRegisterBiz(registerStore RegisterStore, hasher Hasher) *registerBiz {
 		hasher:        hasher,
 	}
 }
-func (biz *registerBiz) Register(ctx appcontext.AppCtx, data *usermodel.UserCreate) error {
+func (biz *registerBiz) Register(ctx context.Context, data *usermodel.UserCreate) error {
 	user, _ := biz.registerStore.Find(ctx, map[string]interface{}{"username": data.Username})
 	if user != nil {
 		return usermodel.ErrEmailExisted

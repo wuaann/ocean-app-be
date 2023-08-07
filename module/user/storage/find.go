@@ -1,13 +1,13 @@
 package userstorage
 
 import (
+	"context"
 	"gorm.io/gorm"
 	"ocean-app-be/common"
-	"ocean-app-be/component/appcontext"
 	usermodel "ocean-app-be/module/user/model"
 )
 
-func (s *sqlStore) Find(ctx appcontext.AppCtx, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error) {
+func (s *sqlStore) Find(ctx context.Context, conditions map[string]interface{}, moreInfo ...string) (*usermodel.User, error) {
 	db := s.db.Table(usermodel.User{}.TableName())
 	for i := range moreInfo {
 		db = db.Preload(moreInfo[i])

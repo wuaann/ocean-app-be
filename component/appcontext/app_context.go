@@ -10,7 +10,8 @@ type appCtx struct {
 	db *gorm.DB
 }
 
-func NewAppCtx(db *gorm.DB) *appCtx {
-	return NewAppCtx(db)
-}
 func (ctx *appCtx) GetMainDBConnection() *gorm.DB { return ctx.db }
+
+func NewAppCtx(db *gorm.DB) *appCtx {
+	return &appCtx{db: db}
+}

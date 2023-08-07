@@ -2,6 +2,7 @@ package ginuser
 
 import (
 	"github.com/gin-gonic/gin"
+	"net/http"
 	"ocean-app-be/common"
 	"ocean-app-be/component/appcontext"
 	"ocean-app-be/component/hasher"
@@ -12,16 +13,22 @@ import (
 
 func RegisterHandler(appCtx appcontext.AppCtx) func(ctx *gin.Context) {
 	return func(ctx *gin.Context) {
+
 		var data usermodel.UserCreate
+
 		db := appCtx.GetMainDBConnection()
+
 		if err := ctx.ShouldBind(&data); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
+
 		store := userstorage.NewSqlStore(db)
 		md5 := hasher.NewMd5Hash()
 		biz := userbiz.NewRegisterBiz(store, md5)
-		if err := biz.Register(ctx.Request.Context(), &data); err != nil {
 
+		if err := biz.Register(ctx.Request.Context(), &data); err != nil {
+			panic(err)
 		}
+		ctx.JSON(http.StatusOK, common.SimpleSuccessResponse(data.Status))
 	}
 }
