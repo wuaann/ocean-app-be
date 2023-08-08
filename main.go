@@ -19,10 +19,14 @@ func main() {
 	if err != nil {
 		log.Fatalln(err)
 	}
+	secretKey, ok := os.LookupEnv("SECRET_KEY")
+	if !ok {
+		log.Fatalln("Missing Secret Key string.")
+	}
 
 	db.Debug()
 
-	appCtx := appcontext.NewAppCtx(db)
+	appCtx := appcontext.NewAppCtx(db, secretKey)
 
 	r := gin.Default()
 	r.GET("/ping", func(c *gin.Context) {
@@ -35,6 +39,7 @@ func main() {
 	v1 := r.Group("v1")
 
 	v1.POST("register", ginuser.RegisterHandler(appCtx))
+	v1.POST("login", ginuser.LoginHandler(appCtx))
 
 	r.Run()
 }
