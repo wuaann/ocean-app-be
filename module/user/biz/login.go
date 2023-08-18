@@ -30,7 +30,7 @@ func NewLoginBiz(userStore LoginStore, provider tokenprovider.Provider, hasher H
 }
 
 func (biz *loginBiz) Login(ctx context.Context, data *usermodel.UserLogin) (*usermodel.Account, error) {
-	user, err := biz.userStore.Find(ctx, map[string]interface{}{"username": data.Username})
+	user, err := biz.userStore.Find(ctx, map[string]interface{}{"email": data.Email})
 	if err != nil {
 		return nil, usermodel.ErrUsernameOrPasswordInvalid
 	}

@@ -25,7 +25,7 @@ func NewRegisterBiz(registerStore RegisterStore, hasher Hasher) *registerBiz {
 	}
 }
 func (biz *registerBiz) Register(ctx context.Context, data *usermodel.UserCreate) error {
-	user, _ := biz.registerStore.Find(ctx, map[string]interface{}{"username": data.Username})
+	user, _ := biz.registerStore.Find(ctx, map[string]interface{}{"email": data.Email})
 	if user != nil {
 		return usermodel.ErrEmailExisted
 	}

@@ -10,6 +10,7 @@ import (
 const EntityName = "User"
 
 type User struct {
+	common.PSModel `json:",inline"`
 	UserId         int        `json:"-" gorm:"column:user_id"`
 	Username       string     `json:"username" gorm:"column:username" `
 	Email          string     `json:"email" gorm:"column:email;"`
@@ -39,14 +40,14 @@ func (u User) TableName() string {
 }
 
 type UserCreate struct {
-	Username       string `json:"username" gorm:"column:username" `
+	common.PSModel `json:",inline"`
 	Email          string `json:"email" gorm:"column:email;"`
 	SaltedPassword string `json:"salted_password" gorm:"column:salted_password" `
+	LastName       string `json:"last_name" gorm:"column:last_name" `
+	FirstName      string `json:"first_name" gorm:"column:first_name" `
 	Role           string `json:"role" gorm:"column:role" `
 	Status         int    `json:"status" gorm:"column:status;default:1;"`
 	Salt           string `json:"-" gorm:"column:salt;"`
-	LastName       string `json:"last_name" gorm:"column:last_name" `
-	FirstName      string `json:"first_name" gorm:"column:first_name" `
 }
 
 func (UserCreate) TableName() string {
@@ -54,8 +55,8 @@ func (UserCreate) TableName() string {
 }
 
 type UserLogin struct {
-	Username       string `json:"username" form:"username" gorm:"column:username" `
-	SaltedPassword string `json:"salted_password" form:"password" gorm:"column:salted_password" `
+	Email          string `json:"email" form:"email" gorm:"column:email" `
+	SaltedPassword string `json:"salted_password" form:"salted_password" gorm:"column:salted_password" `
 }
 
 func (UserLogin) TableName() string {
