@@ -41,7 +41,7 @@ func (biz *loginBiz) Login(ctx context.Context, data *usermodel.UserLogin) (*use
 		return nil, usermodel.ErrUsernameOrPasswordInvalid
 	}
 	payload := tokenprovider.TokenPayload{
-		UserId: user.UserId,
+		UserId: user.Id,
 		Role:   user.Role,
 	}
 

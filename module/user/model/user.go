@@ -4,27 +4,22 @@ import (
 	"errors"
 	"ocean-app-be/common"
 	"ocean-app-be/component/tokenprovider"
-	"time"
 )
 
 const EntityName = "User"
 
 type User struct {
 	common.PSModel `json:",inline"`
-	UserId         int        `json:"-" gorm:"column:user_id"`
-	Username       string     `json:"username" gorm:"column:username" `
-	Email          string     `json:"email" gorm:"column:email;"`
-	SaltedPassword string     `json:"-" gorm:"column:salted_password" `
-	FirstName      string     `json:"first_name" gorm:"column:first_name" `
-	Role           string     `json:"role" gorm:"column:role" `
-	Salt           string     `json:"-" gorm:"column:salt;"`
-	LastName       string     `json:"last_name" gorm:"column:last_name" `
-	CreatedAt      *time.Time `json:"date_created,omitempty" gorm:"date_created"`
-	UpdatedAt      *time.Time `json:"date_updated,omitempty" gorm:"date_updated"`
+	Email          string `json:"email" gorm:"column:email;"`
+	SaltedPassword string `json:"-" gorm:"column:salted_password" `
+	FirstName      string `json:"first_name" gorm:"column:first_name" `
+	Role           string `json:"role" gorm:"column:role" `
+	Salt           string `json:"-" gorm:"column:salt;"`
+	LastName       string `json:"last_name" gorm:"column:last_name" `
 }
 
-func (u *User) GetUserID() int {
-	return u.UserId
+func (u *User) GetUserID() *common.UID {
+	return u.FakeID
 
 }
 func (u *User) GetEmail() string {
