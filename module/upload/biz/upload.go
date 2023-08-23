@@ -1,4 +1,4 @@
-package biz
+package uploadbiz
 
 import (
 	"bytes"
@@ -11,6 +11,7 @@ import (
 	"ocean-app-be/component/uploadprovider"
 	uploadmodel "ocean-app-be/module/upload/model"
 	"path/filepath"
+	"strings"
 	"time"
 )
 
@@ -36,15 +37,19 @@ func (biz *uploadBiz) Upload(
 	folder,
 	fileName string,
 ) (*common.Image, error) {
-	fileBytes := bytes.NewBuffer(data)
+	fileBytes := bytes.NewReader(data)
+
 	w, h, err := getImageDimension(fileBytes)
 
 	if err != nil {
 		return nil, uploadmodel.ErrFileIsNotImage(err)
 	}
 
-	fileExt := filepath.Ext(fileName)
+	if strings.TrimSpace(folder) == "" {
+		folder = "ocean-app"
+	}
 
+	fileExt := filepath.Ext(fileName)
 	fileName = fmt.Sprintf("%d%s", time.Now().UTC().UnixNano(), fileExt)
 
 	img, err := biz.provider.SaveFileUploaded(ctx, data, fmt.Sprintf("%s/%s", folder, fileName))
@@ -61,6 +66,7 @@ func (biz *uploadBiz) Upload(
 }
 
 func getImageDimension(reader io.Reader) (int, int, error) {
+
 	img, _, err := image.DecodeConfig(reader)
 
 	if err != nil {

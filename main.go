@@ -7,7 +7,9 @@ import (
 	"log"
 	"net/http"
 	"ocean-app-be/component/appcontext"
+	"ocean-app-be/component/uploadprovider"
 	middleware "ocean-app-be/midleware"
+	ginupload "ocean-app-be/module/upload/transport/gin"
 	"ocean-app-be/module/user/tranpost/ginuser"
 	"os"
 )
@@ -30,7 +32,19 @@ func main() {
 
 	db.Debug()
 
-	appCtx := appcontext.NewAppCtx(db, secretKey)
+	bucketName, ok := os.LookupEnv("BUCKET_NAME")
+	if !ok {
+		log.Fatalln("Missing firebase Region string.")
+	}
+
+	fibKey, ok := os.LookupEnv("FIREBASE_KEY")
+	if !ok {
+		log.Fatalln("Missing firebase API Key string.")
+	}
+
+	Cloudinary := uploadprovider.NewFirebaseProvider(bucketName, fibKey)
+
+	appCtx := appcontext.NewAppCtx(db, secretKey, Cloudinary)
 
 	r := gin.Default()
 
@@ -62,6 +76,8 @@ func main() {
 	v1.POST("register", ginuser.RegisterHandler(appCtx))
 
 	v1.POST("login", ginuser.LoginHandler(appCtx))
+
+	v1.POST("upload", ginupload.UploadHandler(appCtx))
 
 	r.Run()
 }
