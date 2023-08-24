@@ -12,7 +12,7 @@ import (
 
 func CreatePost(appCtx appcontext.AppCtx) gin.HandlerFunc {
 	return func(c *gin.Context) {
-		var data postmodel.Post
+		var data postmodel.PostCreate
 		db := appCtx.GetMainDBConnection()
 
 		if err := c.ShouldBind(&data); err != nil {

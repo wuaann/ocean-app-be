@@ -12,7 +12,7 @@ import (
 const timeLayout = "2006-01-02T15:04:05.999999"
 
 type sqlData struct {
-	PostID    int `gorm:"column:restaurant_id;"`
+	PostID    int `gorm:"column:post_id;"`
 	LikeCount int `gorm:"column:count;"`
 }
 
@@ -81,9 +81,9 @@ func (s *sqlStore) GetPostLikes(
 
 	var listLike []sqlData
 
-	if err := s.db.Table(postlikemodel.Like{}.TableName()).Select("restaurant_id, count(restaurant_id) as count").
-		Where("restaurant_id in (?)", ids).
-		Group("restaurant_id").
+	if err := s.db.Table(postlikemodel.Like{}.TableName()).Select("post_id, count(post_id) as count").
+		Where("post_id in (?)", ids).
+		Group("post_id").
 		Find(&listLike).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}

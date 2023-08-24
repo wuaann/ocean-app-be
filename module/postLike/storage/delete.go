@@ -9,11 +9,11 @@ import (
 	"context"
 )
 
-func (s *sqlStore) Delete(ctx context.Context, userId, restaurantId int) error {
+func (s *sqlStore) Delete(ctx context.Context, userId, postId int) error {
 	db := s.db.Table(postlikemodel.Like{}.TableName())
 
 	if err := db.
-		Where("user_id = ? and restaurant_id = ?", userId, restaurantId).
+		Where("user_id = ? and post_id = ?", userId, postId).
 		Delete(nil).
 		Error; err != nil {
 		return common.ErrDB(err)

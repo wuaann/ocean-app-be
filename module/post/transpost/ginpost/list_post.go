@@ -19,9 +19,11 @@ func ListPost(appCtx appcontext.AppCtx) gin.HandlerFunc {
 		if err := c.ShouldBind(&paging); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
+
 		paging.Fulfill()
 
 		store := poststorage.NewSqlStore(appCtx.GetMainDBConnection())
+
 		likeStore := postlikestorage.NewSQLStore(appCtx.GetMainDBConnection())
 		repo := postrepo.NewPostRepo(store, likeStore)
 		biz := postbiz.NewListPostBiz(repo)
@@ -33,7 +35,7 @@ func ListPost(appCtx appcontext.AppCtx) gin.HandlerFunc {
 		}
 
 		for i := range result {
-			result[i].Mask(false)
+			result[i].Mask(true)
 
 			if i == len(result)-1 {
 				paging.NextCursor = result[i].FakeID.String()

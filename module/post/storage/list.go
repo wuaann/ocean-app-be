@@ -20,6 +20,7 @@ func (store *sqlStore) ListPostByCondition(
 	if err := db.Count(&paging.Total).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
+
 	for i := range moreKeys {
 		db = db.Preload(moreKeys[i])
 	}
@@ -34,6 +35,7 @@ func (store *sqlStore) ListPostByCondition(
 	if err := db.Limit(paging.Limit).Order("id desc").Find(&result).Error; err != nil {
 		return nil, common.ErrDB(err)
 	}
+
 	return result, nil
 
 }

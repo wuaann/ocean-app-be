@@ -18,7 +18,7 @@ func (Like) TableName() string {
 	return "likes"
 }
 
-func (l *Like) GetRestaurantId() int {
+func (l *Like) GetPostId() int {
 	return l.PostId
 }
 

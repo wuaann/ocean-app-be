@@ -7,7 +7,7 @@ import (
 )
 
 type CreatePostStore interface {
-	Create(ctx context.Context, data *postmodel.Post) error
+	Create(ctx context.Context, data *postmodel.PostCreate) error
 }
 
 type createPostBiz struct {
@@ -18,7 +18,7 @@ func NewCreatePostBiz(store CreatePostStore) *createPostBiz {
 	return &createPostBiz{store: store}
 }
 
-func (biz *createPostBiz) Create(ctx context.Context, data *postmodel.Post) error {
+func (biz *createPostBiz) Create(ctx context.Context, data *postmodel.PostCreate) error {
 	data.Status = 1
 	if err := biz.store.Create(ctx, data); err != nil {
 		return common.ErrDB(err)

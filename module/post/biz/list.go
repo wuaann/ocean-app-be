@@ -7,9 +7,8 @@ import (
 )
 
 type ListPostRepo interface {
-	ListPostByCondition(
+	ListPost(
 		ctx context.Context,
-		conditions map[string]interface{},
 		paging *common.Paging,
 		moreKeys ...string,
 	) ([]postmodel.Post, error)
@@ -26,8 +25,10 @@ func NewListPostBiz(repo ListPostRepo) *listPostBiz {
 func (biz *listPostBiz) ListPost(
 	ctx context.Context,
 	paging *common.Paging,
+	moreKeys ...string,
 ) ([]postmodel.Post, error) {
-	result, err := biz.ListPost(ctx, paging)
+
+	result, err := biz.repo.ListPost(ctx, paging)
 
 	if err != nil {
 		return nil, common.ErrCannotListEntity(postmodel.EntityName, err)
