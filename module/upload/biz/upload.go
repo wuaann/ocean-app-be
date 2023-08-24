@@ -56,10 +56,6 @@ func (biz *uploadBiz) Upload(
 	if err != nil {
 		return nil, uploadmodel.ErrCannotSaveFile(err)
 	}
-	//
-	//img.Width = w
-	//img.Height = h
-	img.Extension = fileExt
 
 	return img, nil
 }

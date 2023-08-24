@@ -18,8 +18,12 @@ type User struct {
 	LastName       string `json:"last_name" gorm:"column:last_name" `
 }
 
-func (u *User) GetUserID() *common.UID {
-	return u.FakeID
+func (data *User) Mask(isAdminOrOwner bool) {
+	data.GenUID(common.DbTypePost)
+}
+
+func (u *User) GetUserId() int {
+	return u.Id
 
 }
 func (u *User) GetEmail() string {

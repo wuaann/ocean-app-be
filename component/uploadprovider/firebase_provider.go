@@ -53,8 +53,7 @@ func (provider *firebaseProvider) SaveFileUploaded(ctx context.Context, data []b
 	}
 
 	img := &common.Image{
-		Url:       fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media", provider.bucketName, url),
-		CloudName: "firebase",
+		Url: fmt.Sprintf("https://firebasestorage.googleapis.com/v0/b/%s/o/%s?alt=media", provider.bucketName, url),
 	}
 
 	return img, nil

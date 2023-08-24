@@ -8,7 +8,8 @@ import (
 	"net/http"
 	"ocean-app-be/component/appcontext"
 	"ocean-app-be/component/uploadprovider"
-	middleware "ocean-app-be/midleware"
+	middleware "ocean-app-be/midlewares"
+	"ocean-app-be/module/post/transpost/ginpost"
 	ginupload "ocean-app-be/module/upload/transport/gin"
 	"ocean-app-be/module/user/tranpost/ginuser"
 	"os"
@@ -78,6 +79,9 @@ func main() {
 	v1.POST("login", ginuser.LoginHandler(appCtx))
 
 	v1.POST("upload", ginupload.UploadHandler(appCtx))
+
+	post := v1.Group("post", middleware.RequiredAuth(appCtx))
+	post.POST("create-post", ginpost.CreatePost(appCtx))
 
 	r.Run()
 }
