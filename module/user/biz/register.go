@@ -25,15 +25,18 @@ func NewRegisterBiz(registerStore RegisterStore, hasher Hasher) *registerBiz {
 	}
 }
 func (biz *registerBiz) Register(ctx context.Context, data *usermodel.UserCreate) error {
-	user, _ := biz.registerStore.Find(ctx, map[string]interface{}{"username": data.Username})
+	user, _ := biz.registerStore.Find(ctx, map[string]interface{}{"email": data.Email})
 	if user != nil {
 		return usermodel.ErrEmailExisted
 	}
+
 	salt := common.GenSalt(50)
+
 	data.SaltedPassword = biz.hasher.Hash(data.SaltedPassword + salt)
 	data.Salt = salt
-	data.Role = "normal"
+	data.Role = "user"
 	data.Status = 1
+
 	if err := biz.registerStore.Create(ctx, data); err != nil {
 		return common.ErrCannotCreateEntity(usermodel.EntityName, err)
 	}
