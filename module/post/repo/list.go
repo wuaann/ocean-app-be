@@ -37,9 +37,11 @@ func NewPostRepo(
 
 func (biz *listPostStore) ListPostByCondition(
 	ctx context.Context,
+	conditions map[string]interface{},
 	paging *common.Paging,
+	moreKeys ...string,
 ) ([]postmodel.Post, error) {
-	result, err := biz.store.ListPostByCondition(ctx, nil, paging, "User")
+	result, err := biz.store.ListPostByCondition(ctx, conditions, paging, "User")
 
 	if err != nil {
 		return nil, common.ErrCannotListEntity(postmodel.EntityName, err)

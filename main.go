@@ -73,15 +73,19 @@ func main() {
 	r.Use(middleware.Recover(appCtx))
 
 	v1 := r.Group("v1")
+	{
+		v1.POST("register", ginuser.RegisterHandler(appCtx))
+		v1.POST("login", ginuser.LoginHandler(appCtx))
 
-	v1.POST("register", ginuser.RegisterHandler(appCtx))
+		v1.POST("upload", ginupload.UploadHandler(appCtx))
 
-	v1.POST("login", ginuser.LoginHandler(appCtx))
+		post := v1.Group("post", middleware.RequiredAuth(appCtx))
+		{
+			post.POST("", ginpost.CreatePost(appCtx))
+			post.GET("", ginpost.ListPost(appCtx))
 
-	v1.POST("upload", ginupload.UploadHandler(appCtx))
+		}
 
-	post := v1.Group("post", middleware.RequiredAuth(appCtx))
-	post.POST("create-post", ginpost.CreatePost(appCtx))
-
+	}
 	r.Run()
 }
