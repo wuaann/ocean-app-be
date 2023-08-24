@@ -9,6 +9,7 @@ type Post struct {
 	UserID         int           `json:"user_id" gorm:"column:user_id"`
 	Caption        string        `json:"caption" gorm:"column:caption"`
 	Images         *common.Image `json:"images,omitempty" gorm:"column:images;type:json"`
+	LikedCount     int           `json:"liked_count" gorm:"column:liked_count"`
 }
 
 func (Post) TableName() string {

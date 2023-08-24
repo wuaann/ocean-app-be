@@ -9,7 +9,6 @@ import (
 func (store *sqlStore) ListPostByCondition(
 	ctx context.Context,
 	conditions map[string]interface{},
-
 	paging *common.Paging,
 	moreKeys ...string,
 ) ([]postmodel.Post, error) {
