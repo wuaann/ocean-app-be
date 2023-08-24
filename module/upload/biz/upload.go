@@ -1,7 +1,6 @@
 package uploadbiz
 
 import (
-	"bytes"
 	"context"
 	"fmt"
 	"image"
@@ -37,13 +36,13 @@ func (biz *uploadBiz) Upload(
 	folder,
 	fileName string,
 ) (*common.Image, error) {
-	fileBytes := bytes.NewReader(data)
-
-	w, h, err := getImageDimension(fileBytes)
-
-	if err != nil {
-		return nil, uploadmodel.ErrFileIsNotImage(err)
-	}
+	//fileBytes := bytes.NewReader(data)
+	//
+	//w, h, err := getImageDimension(fileBytes)
+	//
+	//if err != nil {
+	//	return nil, uploadmodel.ErrFileIsNotImage(err)
+	//}
 
 	if strings.TrimSpace(folder) == "" {
 		folder = "ocean-app"
@@ -52,14 +51,14 @@ func (biz *uploadBiz) Upload(
 	fileExt := filepath.Ext(fileName)
 	fileName = fmt.Sprintf("%d%s", time.Now().UTC().UnixNano(), fileExt)
 
-	img, err := biz.provider.SaveFileUploaded(ctx, data, fmt.Sprintf("%s/%s", folder, fileName))
+	img, err := biz.provider.SaveFileUploaded(ctx, data, fmt.Sprintf("%s/%s", folder, fileName), fmt.Sprint(folder+"%2F"+fileName))
 
 	if err != nil {
 		return nil, uploadmodel.ErrCannotSaveFile(err)
 	}
-
-	img.Width = w
-	img.Height = h
+	//
+	//img.Width = w
+	//img.Height = h
 	img.Extension = fileExt
 
 	return img, nil

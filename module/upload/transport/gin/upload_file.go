@@ -26,13 +26,19 @@ func UploadHandler(appCtx appcontext.AppCtx) func(*gin.Context) {
 		if err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
+
 		defer file.Close()
+
 		dataBytes := make([]byte, fileHeader.Size)
+
 		if _, err := file.Read(dataBytes); err != nil {
 			panic(common.ErrInvalidRequest(err))
 		}
+
 		imgStore := uploadstorage.NewSQLStore(db)
+
 		biz := uploadbiz.NewUploadBiz(appCtx.UploadProvider(), imgStore)
+
 		img, err := biz.Upload(c.Request.Context(), dataBytes, folder, fileHeader.Filename)
 
 		if err != nil {

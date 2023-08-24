@@ -6,5 +6,5 @@ import (
 )
 
 type UploadProvider interface {
-	SaveFileUploaded(ctx context.Context, data []byte, fileName string) (*common.Image, error)
+	SaveFileUploaded(ctx context.Context, data []byte, fileName, url string) (*common.Image, error)
 }
