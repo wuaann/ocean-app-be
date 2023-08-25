@@ -5,7 +5,6 @@ import (
 	"time"
 )
 
-// variable is private
 type Message struct {
 	id        string
 	channel   Topic // can be ignore
